@@ -46,12 +46,12 @@ app:
 			sub x13,x13,1
 			cbnz x13,board_column_loop
 		
-	//	add x6,x6,200		//	last pixel of that row
-	//	mov x1,513
-	//	mov x2,104
-	//	madd x6,x1,x2,x6 	//	x6 = x6 + 513 * 52 * 2
-	//	sub x9,x9,1
-	//	cbnz x9,board_row_loop
+		//add x6,x6,200		//	last pixel of that row
+		//mov x1,512
+		//mov x2,104
+		//madd x6,x1,x2,x6 	//	x6 = x6 + 512 * 52 * 2
+		//sub x9,x9,1
+		//cbnz x9,board_row_loop
 
 loop:
 	b loop

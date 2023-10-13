@@ -29,6 +29,7 @@ marco_sup_inf:
 // location x6
 
 rectangle:
+    mov x8,1024
     mov x10,x6              // posicion primer pixel
     mov x14,x4           	// Tamaño en Y
     outer_loop:
@@ -38,9 +39,8 @@ rectangle:
                 add x10,x10,2	   	    // Siguiente pixel
                 sub x15,x15,1	   	// Decrementar el contador X
             cbnz x15,inner_loop	   	    // Si no terminó la fila, saltar    
-        mov x10,x6
-        add x10,x10,1024               // pixel de la siguiente linea
+        madd x10,x14,x8,x6               // pixel de la linea i, x10 = (x4 * x8) + x6
         sub x14,x14,1	   		// Decrementar el contador Y
         cbnz x14,outer_loop	  	// Si no es la última fila, saltar		
-    
+        
     ret
