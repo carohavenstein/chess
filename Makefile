@@ -15,7 +15,7 @@ clean :
 	rm -f *.img
 	rm -f memory_map.txt
 
-main.o : main.s
+main.o : main.s rectangle.s
 	$(ARMGNU)-as $(AOPS) main.s gpio.s app.s rectangle.s -o main.o
 
 

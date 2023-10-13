@@ -10,50 +10,79 @@ app:
 	
 	//---------------- Main code --------------------
 	// X0 contiene la dirección base del framebuffer (NO MODIFICAR)
-	
 
-	mov w3,0x00FF    	// color
-	mov x4,48			// height
-	mov x5,512			// width
-	add x6,x0,0		// X6 dirección base del framebuffer
-	
-	bl marco_sup_inf
+	// frame width 48 pixels
 
-	mov x14,512
-	mov x15,96
-	madd x6,x14,x15,x6 	//	x6 = x6 + 513 * 52 * 2
+						// top frame
+	mov x1, 0			// xpixel
+	mov x2, 0			// ypixel
+	mov w3, 0x00FF		// color
+	mov x4, 48			// height
+	mov x5, 512			// width
 
-	mov x4,52			// height
-	mov x5,52			// width
-	
-	//mov x9,8		//columns
-	//board_row_loop:
-		mov x13,8	// rows
-		add x6,x6,96		// left margin (48 px)
-		board_column_loop:		
-			add x11,x9,x13 	// rows + columns
-			and x11,x11,1
-			cmp x11,0			//checks if sum of indexes are even or uneven
+	bl rectangle
+						// left frame
+	mov x1, 0			// xpixel
+	mov x2, 0			// ypixel
+	mov x4, 512			// height
+	mov x5, 48			// width
+
+	bl rectangle
+						// right frame
+	mov x1, 464			// xpixel
+	mov x2, 0			// ypixel
+	mov x4, 512			// height
+	mov x5, 48			// width
+
+	bl rectangle
+						// bottom frame
+	mov x1, 0			// xpixel
+	mov x2, 464			// ypixel
+	mov x4, 48			// height
+	mov x5, 512			// width
+
+	bl rectangle
+
+	// x6, x7, x13, x14, x15
+
+	mov x1, 48			// xpixel
+	mov x2, 48			// ypixel
+	mov x4, 52			// height
+	mov x5, 52			// width
+
+	mov x6, 8		// 8 rows
+	board_row_loop:
+
+		mov x7, 8	// 8 columns
+
+		board_column_loop:	
+
+			add x15, x6, x7 	// x15 = row i + column i
+			and x15, x15, 1
+			cmp x15, 0			// checks if sum of indexes is even or uneven
 			b.ne uneven
-			mov w3,0xFFFF    			// color white
-			b skip
-			uneven: 
-			mov w3,0x0000		// color black
-			skip:
 			
+			mov w3,0xFFFF    	// color WHITE
+			b skip
+
+			uneven: 
+			mov w3,0x0000		// color BLACK
+			skip:
+
 			bl rectangle
-			add x6,x6,104  
-			sub x13,x13,1
-			cbnz x13,board_column_loop
-		
-		//add x6,x6,200		//	last pixel of that row
-		//mov x1,512
-		//mov x2,104
-		//madd x6,x1,x2,x6 	//	x6 = x6 + 512 * 52 * 2
-		//sub x9,x9,1
-		//cbnz x9,board_row_loop
+
+			add x1, x1, 52		// next square, 52 more pixels in x
+
+			sub x7, x7, 1
+			cbnz x7, board_column_loop
+			add x2, x2, 52		// pixely + 52 -> next row
+			mov x1, 48			// pixelx 48 to start next row
+
+		sub x6, x6, 1
+		cbnz x6, board_row_loop
 
 loop:
 	b loop
+
 
 	
