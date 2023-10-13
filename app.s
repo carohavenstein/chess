@@ -19,11 +19,15 @@ app:
 	
 	bl marco_sup_inf
 
+	mov x14,512
+	mov x15,96
+	madd x6,x14,x15,x6 	//	x6 = x6 + 513 * 52 * 2
+
 	mov x4,52			// height
 	mov x5,52			// width
 	
-	mov x9,8		//columns
-	board_row_loop:
+	//mov x9,8		//columns
+	//board_row_loop:
 		mov x13,8	// rows
 		add x6,x6,96		// left margin (48 px)
 		board_column_loop:		
@@ -42,12 +46,12 @@ app:
 			sub x13,x13,1
 			cbnz x13,board_column_loop
 		
-		add x6,x6,200		//	last pixel of that row
-		mov x14,513
-		mov x15,104
-		madd x6,x14,x15,x6 	//	x6 = x6 + 513 * 52 * 2
-		sub x9,x9,1
-		cbnz x9,board_row_loop
+	//	add x6,x6,200		//	last pixel of that row
+	//	mov x1,513
+	//	mov x2,104
+	//	madd x6,x1,x2,x6 	//	x6 = x6 + 513 * 52 * 2
+	//	sub x9,x9,1
+	//	cbnz x9,board_row_loop
 
 loop:
 	b loop

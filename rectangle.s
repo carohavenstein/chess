@@ -38,7 +38,8 @@ rectangle:
                 add x10,x10,2	   	    // Siguiente pixel
                 sub x15,x15,1	   	// Decrementar el contador X
             cbnz x15,inner_loop	   	    // Si no terminó la fila, saltar    
-        add x10,x10,1023               // pixel de la siguiente linea
+        mov x10,x6
+        add x10,x10,1024               // pixel de la siguiente linea
         sub x14,x14,1	   		// Decrementar el contador Y
         cbnz x14,outer_loop	  	// Si no es la última fila, saltar		
     
