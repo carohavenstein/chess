@@ -11,53 +11,45 @@ app:
 	//---------------- Main code --------------------
 	// X0 contiene la dirección base del framebuffer (NO MODIFICAR)
 	
-loop:
+
 	mov w3,0x00FF    	// color
 	mov x4,48			// height
 	mov x5,512			// width
 	add x6,x0,0		// X6 dirección base del framebuffer
+	
 	bl marco_sup_inf
 
-	mox x9,8	//columns
-	board_column_loop:
-		mov x10,8	// rows
-		board_row_loop:
-			add x6,x6,48		// left margin
-			add x11,x19,x10 	// rows + columns
+	mov x4,52			// height
+	mov x5,52			// width
+	
+	mov x9,8		//columns
+	board_row_loop:
+		mov x13,8	// rows
+		add x6,x6,96		// left margin (48 px)
+		board_column_loop:		
+			add x11,x9,x13 	// rows + columns
 			and x11,x11,1
-			cmp x11,0
+			cmp x11,0			//checks if sum of indexes are even or uneven
 			b.ne uneven
-			mov w3,0xFFFF    		// color white - even
+			mov w3,0xFFFF    			// color white
 			b skip
-			uneven: mov w3,0x0000		// color black
+			uneven: 
+			mov w3,0x0000		// color black
 			skip:
-			mov x4,52			// height
-			mov x5,52			// width
+			
 			bl rectangle
-			add x6
-			sub x10,x10,1
+			add x6,x6,104  
+			sub x13,x13,1
+			cbnz x13,board_column_loop
+		
+		add x6,x6,200		//	last pixel of that row
+		mov x14,513
+		mov x15,104
+		madd x6,x14,x15,x6 	//	x6 = x6 + 513 * 52 * 2
+		sub x9,x9,1
+		cbnz x9,board_row_loop
 
-
-
-
-	---------------------
-	mov x11,x4           	// Tamaño en Y
-
-    loop1:
-        mov x12,x5         	// Tamaño en X
-            loop0:
-                sturh w3,[x6]	   	// Setear el color del pixel N
-                add x6,x6,2	   	    // Siguiente pixel
-                sub x12,x12,1	   	// Decrementar el contador X
-            cbnz x12,loop0	   	    // Si no terminó la fila, saltar    
-        add x6,x6,1023               // pixel de la siguiente linea
-        sub x11,x11,1	   		// Decrementar el contador Y
-        cbnz x11,loop1	  	// Si no es la última fila, saltar
-	------------------------
-
-
-
-
+loop:
 	b loop
 
 	

@@ -7,13 +7,13 @@
 // location x6
 
 marco_sup_inf:
-    
+    mov x10,x6              // posicion primer pixel
     mov x14,x4           	// Tamaño en Y
     loop1:
         mov x15,x5         	// Tamaño en X
             loop0:
-                sturh w3,[x6]	   	// Setear el color del pixel N
-                add x6,x6,2	   	    // Siguiente pixel
+                sturh w3,[x10]	   	// Setear el color del pixel N
+                add x10,x10,2	   	    // Siguiente pixel
                 sub x15,x15,1	   	// Decrementar el contador X
             cbnz x15,loop0	   	    // Si no terminó la fila, saltar    
 
@@ -29,17 +29,17 @@ marco_sup_inf:
 // location x6
 
 rectangle:
-    
+    mov x10,x6              // posicion primer pixel
     mov x14,x4           	// Tamaño en Y
-    loop1:
+    outer_loop:
         mov x15,x5         	// Tamaño en X
-            loop0:
-                sturh w3,[x6]	   	// Setear el color del pixel N
-                add x6,x6,2	   	    // Siguiente pixel
+            inner_loop:
+                sturh w3,[x10]	   	// Setear el color del pixel N
+                add x10,x10,2	   	    // Siguiente pixel
                 sub x15,x15,1	   	// Decrementar el contador X
-            cbnz x15,loop0	   	    // Si no terminó la fila, saltar    
-        add x6,x6,1023               // pixel de la siguiente linea
+            cbnz x15,inner_loop	   	    // Si no terminó la fila, saltar    
+        add x10,x10,1023               // pixel de la siguiente linea
         sub x14,x14,1	   		// Decrementar el contador Y
-        cbnz x14,loop1	  	// Si no es la última fila, saltar		
+        cbnz x14,outer_loop	  	// Si no es la última fila, saltar		
     
     ret
